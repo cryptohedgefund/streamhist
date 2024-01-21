@@ -29,7 +29,7 @@ class WeightedHist(StreamHist):
         the moving window. For example, a 60-second window with an average age
         of 30 seconds would yield an alpha of 0.064516129.
         """
-        super(StreamHist, self).__init__(maxbins, weighted)
+        super().__init__(maxbins=maxbins, weighted=weighted)
         self.alpha = alpha if alpha is not None else _estimate_alpha(30)
 
     def scale_down(self, exclude):
@@ -38,7 +38,7 @@ class WeightedHist(StreamHist):
             if i != exclude:
                 b.count = _ewma(b.count, 0, self.alpha)
 
-    def update_total(self):
+    def update_total(self, size=1):
         # Not a very optimal way to implement this...
         total = 0
         for b in self.bins:
